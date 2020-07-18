@@ -6,15 +6,14 @@ import {
   UseGuards,
   Get,
   Query,
+  Param,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/modules/auth/dto/create-user.dto';
 import { User } from 'src/db/schemas/user.schema';
 import { UsersService } from '../services/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/core/guards/role.guard';
-import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { ReadUsersDTO } from '../DTOs/readUsers.dto';
-import { AuthenticatedUser } from 'src/modules/messages/decorators/AuthenticatedUser.decorator';
 
 @Controller('users')
 @UseGuards(new RoleGuard())
@@ -35,7 +34,7 @@ export class UsersController {
   }
 
   @Get(':_id')
-  async findOne(@AuthenticatedUser() user): Promise<User> {
-    return this.userService.findOne(user._id);
+  async findOne(@Param('_id') _id: string): Promise<User> {
+    return this.userService.findOne(_id);
   }
 }

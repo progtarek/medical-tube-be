@@ -2,13 +2,13 @@ import {
   Injectable,
   ConflictException,
   InternalServerErrorException,
+  NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { User } from 'src/db/schemas/user.schema';
-import { ReturnModelType } from '@typegoose/typegoose';
 import { CreateUserDto } from 'src/modules/auth/dto/create-user.dto';
-import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { ReadUsersDTO } from '../DTOs/readUsers.dto';
+import { Types } from 'mongoose';
 
 @Injectable()
 export class UsersService {
@@ -43,13 +43,17 @@ export class UsersService {
     return users;
   }
 
-  async findOne(_id: string): Promise<User> {
+  async findOne(_id): Promise<User> {
     const user = await this.userModel
-      .findById(_id)
+      .findById(Types.ObjectId(_id))
       .select(
         'username email mobile gender role profilePictureUrl createdAt updatedAt',
       );
 
-    return user;
+    if (user) {
+      return user;
+    } else {
+      throw new NotFoundException();
+    }
   }
 }
