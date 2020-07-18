@@ -25,6 +25,9 @@ export class User {
     trim: true,
     lowercase: true,
     required: false,
+    unique: true,
+    uniqueCaseInsensitive: true,
+    sparse: true,
   })
   email: string;
 
@@ -37,7 +40,7 @@ export class User {
 
   @Prop({
     required: true,
-    trim: true
+    trim: true,
   })
   password: string;
 
