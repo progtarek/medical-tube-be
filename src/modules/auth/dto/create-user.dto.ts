@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsEmail,
   IsEnum,
+  IsIn,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -33,6 +34,6 @@ export class CreateUserDto {
   gender: 'MALE' | 'FEMALE';
 
   @IsNotEmpty()
-  @IsEnum(['ADMIN', 'USER'], { message: 'role should be admin or user' })
+  @IsIn(['ADMIN', 'USER'], { message: 'role should be admin or user' })
   role: 'ADMIN' | 'USER';
 }

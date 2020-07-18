@@ -1,5 +1,6 @@
-import { Prop, modelOptions, pre } from '@typegoose/typegoose';
+import { Prop, modelOptions, pre, plugin } from '@typegoose/typegoose';
 import * as bcrypt from 'bcrypt';
+import * as mongoosePaginate from 'mongoose-paginate';
 
 @pre<User>('save', async function() {
   if (!this.isModified('password')) return;
@@ -11,6 +12,7 @@ import * as bcrypt from 'bcrypt';
     throw error;
   }
 })
+@plugin(mongoosePaginate)
 @modelOptions({ schemaOptions: { timestamps: true } })
 export class User {
   @Prop({
