@@ -30,11 +30,6 @@ export class User {
 
   @Prop({
     trim: true,
-  })
-  fcmToken: string;
-
-  @Prop({
-    trim: true,
     lowercase: true,
     required: false,
   })
@@ -42,27 +37,20 @@ export class User {
 
   @Prop({
     required: true,
+    trim: true
   })
   password: string;
-
-  @Prop({
-    required: false,
-  })
-  googleId: string;
-
-  @Prop({
-    required: false,
-  })
-  isGoogleAuthorized: Boolean;
 
   @Prop()
   gender: 'MALE' | 'FEMALE';
 
+  @Prop({
+    required: true,
+  })
+  role: 'ADMIN' | 'USER';
+
   @Prop({ required: false })
   profilePictureUrl: string;
-
-  @Prop({ default: 'ACTIVE' })
-  status: 'ACTIVE' | 'BLOCKED' | 'SUSPENDED';
 
   public async comparePassword(password: string): Promise<boolean> {
     try {
@@ -72,23 +60,3 @@ export class User {
     }
   }
 }
-
-// UserSchema.methods.generateJWT = function (JWT_SECRET) {
-//   const payload = {
-//     _id: this._id,
-//     role: this.role,
-//   };
-
-//   return new Promise((resolve, reject) => {
-//     jsonwebtoken.sign(
-//       payload,
-//       JWT_SECRET,
-//       { expiresIn: "1y" },
-//       (error, token) => {
-//         if (error || !token) return reject(error);
-
-//         return resolve(token);
-//       }
-//     );
-//   });
-// };

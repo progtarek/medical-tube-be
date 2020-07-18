@@ -4,6 +4,9 @@ import {
   MaxLength,
   IsMobilePhone,
   IsNotEmpty,
+  IsOptional,
+  IsEmail,
+  IsEnum,
 } from 'class-validator';
 
 export class CreateUserDto {
@@ -15,12 +18,21 @@ export class CreateUserDto {
   @IsNotEmpty()
   @MinLength(8)
   @MaxLength(20)
-  @Matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z].*$/, {
-    message: 'Password too weak',
-  })
   password: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsMobilePhone('ar-EG')
   mobile: string;
+
+  @IsEmail()
+  @IsOptional()
+  email: string;
+
+  @IsOptional()
+  @IsEnum(['MALE', 'FEMALE'])
+  gender: 'MALE' | 'FEMALE';
+
+  @IsNotEmpty()
+  @IsEnum(['ADMIN', 'USER'], { message: 'role should be admin or user' })
+  role: 'ADMIN' | 'USER';
 }
