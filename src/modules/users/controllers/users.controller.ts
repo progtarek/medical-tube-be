@@ -11,6 +11,6 @@ export class UsersController {
   async register(
     @Body(ValidationPipe) createUserDto: CreateUserDto,
   ): Promise<User> {
-    return await this.userService.register(createUserDto);
+    return await this.userService.createUser(createUserDto);
   }
 }

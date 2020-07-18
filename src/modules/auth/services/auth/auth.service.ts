@@ -13,14 +13,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(authCredentials: AuthCredentialsDto): Promise<{ token: string }> {
+  async login(authCredentials: AuthCredentialsDto): Promise<any> {
     const { username, password } = authCredentials;
-    const user = await this.userModel.findOne({ username });
+    let user = await await this.userModel.findOne({ username });
     if (!user || !(await user.comparePassword(password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
     const jwtPayload: JwtPayloadDto = { username: user.username };
     const token = await this.jwtService.sign(jwtPayload);
-    return { token };
+    user = { ...user.toJSON() };
+    delete user.password;
+    return { token, ...user };
   }
 }
