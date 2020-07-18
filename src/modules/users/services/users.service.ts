@@ -31,7 +31,7 @@ export class UsersService {
 
   async readAll(query: ReadUsersDTO): Promise<User[]> {
     const { role, ...rest } = query;
-    const messages = await this.userModel.paginate(
+    const users = await this.userModel.paginate(
       { role },
       {
         select:
@@ -40,6 +40,16 @@ export class UsersService {
       },
     );
 
-    return messages;
+    return users;
+  }
+
+  async findOne(_id: string): Promise<User> {
+    const user = await this.userModel
+      .findById(_id)
+      .select(
+        'username email mobile gender role profilePictureUrl createdAt updatedAt',
+      );
+
+    return user;
   }
 }

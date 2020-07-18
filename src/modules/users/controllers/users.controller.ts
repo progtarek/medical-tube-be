@@ -14,6 +14,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/core/guards/role.guard';
 import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { ReadUsersDTO } from '../DTOs/readUsers.dto';
+import { AuthenticatedUser } from 'src/modules/messages/decorators/AuthenticatedUser.decorator';
 
 @Controller('users')
 @UseGuards(new RoleGuard())
@@ -31,5 +32,10 @@ export class UsersController {
   @Get('')
   async findAll(@Query(ValidationPipe) query: ReadUsersDTO): Promise<User[]> {
     return this.userService.readAll(query);
+  }
+
+  @Get(':_id')
+  async findOne(@AuthenticatedUser() user): Promise<User> {
+    return this.userService.findOne(user._id);
   }
 }
