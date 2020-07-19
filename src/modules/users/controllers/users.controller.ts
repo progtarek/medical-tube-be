@@ -7,6 +7,8 @@ import {
   Get,
   Query,
   Param,
+  Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/modules/auth/dto/create-user.dto';
 import { User } from 'src/db/schemas/user.schema';
@@ -21,13 +23,6 @@ import { ReadUsersDTO } from '../DTOs/readUsers.dto';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
-  @Post('')
-  async createUser(
-    @Body(ValidationPipe) createUserDto: CreateUserDto,
-  ): Promise<User> {
-    return await this.userService.createUser(createUserDto);
-  }
-
   @Get('')
   async findAll(@Query(ValidationPipe) query: ReadUsersDTO): Promise<User[]> {
     return this.userService.readAll(query);
@@ -36,5 +31,18 @@ export class UsersController {
   @Get(':_id')
   async findOne(@Param('_id') _id: string): Promise<User> {
     return this.userService.findOne(_id);
+  }
+
+  @Post('')
+  async createUser(
+    @Body(ValidationPipe) createUserDto: CreateUserDto,
+  ): Promise<User> {
+    return await this.userService.createUser(createUserDto);
+  }
+
+  @Delete(':_id')
+  @HttpCode(204)
+  async deleteOne(@Param('_id') _id: string) {
+    return this.userService.deleteOne(_id);
   }
 }

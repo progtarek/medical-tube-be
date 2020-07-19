@@ -56,4 +56,15 @@ export class UsersService {
       throw new NotFoundException();
     }
   }
+
+  async deleteOne(_id: string) {
+    const user = await this.userModel.findById(Types.ObjectId(_id));
+
+    if (user) {
+      await user.remove();
+      return;
+    } else {
+      throw new NotFoundException();
+    }
+  }
 }

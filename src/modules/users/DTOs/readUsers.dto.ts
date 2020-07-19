@@ -1,18 +1,12 @@
-import {
-  IsIn,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  IsOptional,
-} from 'class-validator';
+import { IsIn, IsNotEmpty, IsString, IsOptional } from 'class-validator';
 
 export class ReadUsersDTO {
   @IsOptional()
-  @IsNumber()
+  @IsString()
   page: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   limit: number;
 
   @IsOptional()
