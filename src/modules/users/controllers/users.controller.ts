@@ -9,6 +9,7 @@ import {
   Param,
   Delete,
   HttpCode,
+  Patch,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/modules/auth/dto/create-user.dto';
 import { User } from 'src/db/schemas/user.schema';
@@ -16,6 +17,7 @@ import { UsersService } from '../services/users.service';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/core/guards/role.guard';
 import { ReadUsersDTO } from '../DTOs/readUsers.dto';
+import { UpdateUserDTO } from '../DTOs/update-users.dto';
 
 @Controller('users')
 @UseGuards(new RoleGuard())
@@ -44,5 +46,13 @@ export class UsersController {
   @HttpCode(204)
   async deleteOne(@Param('_id') _id: string) {
     return this.userService.deleteOne(_id);
+  }
+
+  @Patch(':_id')
+  async updateOne(
+    @Param('_id') _id: string,
+    @Body(ValidationPipe) payload: UpdateUserDTO,
+  ) {
+    return this.userService.updateOne(_id, payload);
   }
 }

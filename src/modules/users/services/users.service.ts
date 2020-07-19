@@ -9,6 +9,7 @@ import { User } from 'src/db/schemas/user.schema';
 import { CreateUserDto } from 'src/modules/auth/dto/create-user.dto';
 import { ReadUsersDTO } from '../DTOs/readUsers.dto';
 import { Types } from 'mongoose';
+import { UpdateUserDTO } from '../DTOs/update-users.dto';
 
 @Injectable()
 export class UsersService {
@@ -63,6 +64,21 @@ export class UsersService {
     if (user) {
       await user.remove();
       return;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  async updateOne(_id: string, payload: UpdateUserDTO): Promise<User> {
+    let user = await this.userModel.findOneAndUpdate(
+      { _id: Types.ObjectId(_id) },
+      { ...payload },
+      { new: true },
+    );
+    if (user) {
+      user = { ...user.toJSON() };
+      delete user.password;
+      return user;
     } else {
       throw new NotFoundException();
     }
