@@ -2,6 +2,11 @@ import { Prop, modelOptions, pre, plugin } from '@typegoose/typegoose';
 import * as bcrypt from 'bcrypt';
 import * as mongoosePaginate from 'mongoose-paginate';
 
+enum Gender {
+  MALE = 'male',
+  FEMALE = 'female',
+}
+
 @pre<User>('save', async function() {
   if (!this.isModified('password')) return;
 
@@ -46,8 +51,8 @@ export class User {
   })
   password: string;
 
-  @Prop()
-  gender: 'MALE' | 'FEMALE';
+  @Prop({ enum: Gender })
+  gender?: Gender;
 
   @Prop({
     required: true,

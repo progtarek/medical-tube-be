@@ -16,6 +16,7 @@ import { MessagesModule } from './modules/messages/messages.module';
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true,
+        useFindAndModify: false,
       }),
       inject: [ConfigService],
     }),
