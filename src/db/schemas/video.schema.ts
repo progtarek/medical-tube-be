@@ -19,6 +19,9 @@ export class Video {
     ar: string;
   };
 
+  @Prop({ required: true })
+  url: string;
+
   @Prop({ ref: 'Category', required: true })
   category!: Ref<Category>;
 }
