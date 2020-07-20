@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './modules/auth/auth.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { VideosModule } from './modules/videos/videos.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,6 +26,7 @@ import { VideosModule } from './modules/videos/videos.module';
     AuthModule,
     MessagesModule,
     VideosModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],

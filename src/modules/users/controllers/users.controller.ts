@@ -20,8 +20,8 @@ import { ReadUsersDTO } from '../DTOs/readUsers.dto';
 import { UpdateUserDTO } from '../DTOs/update-users.dto';
 
 @Controller('users')
-@UseGuards(new RoleGuard())
-@UseGuards(AuthGuard())
+// @UseGuards(new RoleGuard())
+// @UseGuards(AuthGuard())
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 

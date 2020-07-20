@@ -1,21 +1,25 @@
-import { Prop, modelOptions, Ref, plugin, MapProp } from '@typegoose/typegoose';
-import { User } from './user.schema';
+import {
+  Prop,
+  modelOptions,
+  Ref,
+  plugin,
+  mongoose,
+} from '@typegoose/typegoose';
 import * as mongoosePaginate from 'mongoose-paginate';
+import { MultiLanguageDTO } from 'src/core/DTO/multi-language.dto';
+import { MultiLanguageOptionalDTO } from 'src/core/DTO/multi-language.optional';
 
 @plugin(mongoosePaginate)
 @modelOptions({ schemaOptions: { timestamps: true } })
 export class Category {
   @Prop({
     required: true,
+    type: mongoose.Schema.Types.Mixed,
   })
-  name: {
-    en: string;
-    ar: string;
-  };
+  name: MultiLanguageDTO;
 
-  @Prop()
-  description: {
-    en: string;
-    ar: string;
-  };
+  @Prop({
+    type: mongoose.Schema.Types.Mixed,
+  })
+  description: MultiLanguageOptionalDTO;
 }
