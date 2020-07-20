@@ -12,6 +12,7 @@ import { VideosService } from '../../services/videos/videos.service';
 import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { Video } from 'src/db/schemas/video.schema';
 import { VideoDTO } from '../../DTO/video.dto';
+import { RoleGuard } from 'src/core/guards/role.guard';
 
 @Controller('videos')
 @UseGuards(AuthGuard())
@@ -26,7 +27,8 @@ export class VideosController {
   }
 
   @Post('')
-  async createOne(@Body(ValidationPipe) createVideoPayload: VideoDTO) {
-    return;
+  @UseGuards(new RoleGuard())
+  async createOne(@Body(ValidationPipe) payload: VideoDTO): Promise<Video> {
+    return this.videoService.createVideo(payload);
   }
 }
