@@ -14,6 +14,16 @@ export class VideosService {
     @InjectModel(Category) private readonly categoryModel,
   ) {}
 
+  async readVideo(_id: string): Promise<Video> {
+    const video = await this.videoModel.findById(Types.ObjectId(_id)).populate({
+      path: 'category',
+    });
+    if (!video) {
+      throw new NotFoundException('Video does not exist');
+    }
+    return video;
+  }
+
   async readAll(query: ReadManyQueryDto): Promise<Video[]> {
     const videos = await this.videoModel.paginate(
       {},

@@ -30,6 +30,11 @@ export class VideosController {
     return this.videoService.readAll(query);
   }
 
+  @Get(':_id')
+  async readVideo(@Param('_id') _id: string): Promise<Video> {
+    return this.videoService.readVideo(_id);
+  }
+
   @Post('')
   @UseGuards(new RoleGuard())
   async createVideo(@Body(ValidationPipe) payload: VideoDTO): Promise<Video> {
