@@ -8,15 +8,14 @@ import {
   Body,
   Patch,
   Param,
-  HttpCode,
   Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { VideosService } from '../../services/videos/videos.service';
-import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { Video } from 'src/db/schemas/video.schema';
 import { VideoDTO } from '../../DTO/video.dto';
 import { RoleGuard } from 'src/core/guards/role.guard';
+import { ReadManyVideosDTO } from '../../DTO/read-many-video.dto';
 
 @Controller('videos')
 @UseGuards(AuthGuard())
@@ -25,7 +24,7 @@ export class VideosController {
 
   @Get('')
   async findAll(
-    @Query(ValidationPipe) query: ReadManyQueryDto,
+    @Query(ValidationPipe) query: ReadManyVideosDTO,
   ): Promise<Video[]> {
     return this.videoService.readAll(query);
   }

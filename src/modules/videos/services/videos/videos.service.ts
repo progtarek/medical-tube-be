@@ -1,11 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { Video } from 'src/db/schemas/video.schema';
 import { VideoDTO } from '../../DTO/video.dto';
 import { Category } from 'src/db/schemas/category.schema';
 import { Types } from 'mongoose';
-import { mongoose } from '@typegoose/typegoose';
+import { ReadManyVideosDTO } from '../../DTO/read-many-video.dto';
 
 @Injectable()
 export class VideosService {
@@ -24,11 +23,13 @@ export class VideosService {
     return video;
   }
 
-  async readAll(query: ReadManyQueryDto): Promise<Video[]> {
+  async readAll(query: ReadManyVideosDTO): Promise<Video[]> {
+    const { category } = query;
     const videos = await this.videoModel.paginate(
-      {},
+      { ...(category && { category }) },
       {
         ...query,
+        populate: [{ path: 'category', select: 'name' }],
       },
     );
 
