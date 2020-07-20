@@ -5,6 +5,7 @@ import { Video } from 'src/db/schemas/video.schema';
 import { VideoDTO } from '../../DTO/video.dto';
 import { Category } from 'src/db/schemas/category.schema';
 import { Types } from 'mongoose';
+import { mongoose } from '@typegoose/typegoose';
 
 @Injectable()
 export class VideosService {
@@ -58,5 +59,14 @@ export class VideosService {
       throw new NotFoundException('Video does not exist');
     }
     return video;
+  }
+
+  async deleteVideo(_id: string) {
+    const video = await this.videoModel.findById(Types.ObjectId(_id));
+    if (!video) {
+      throw new NotFoundException('Video does not exist');
+    }
+    await video.remove();
+    return;
   }
 }

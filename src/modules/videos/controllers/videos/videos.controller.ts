@@ -8,6 +8,8 @@ import {
   Body,
   Patch,
   Param,
+  HttpCode,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { VideosService } from '../../services/videos/videos.service';
@@ -41,5 +43,11 @@ export class VideosController {
     @Param('_id') _id: string,
   ): Promise<Video> {
     return this.videoService.updateVideo(_id, payload);
+  }
+
+  @Delete(':_id')
+  @UseGuards(new RoleGuard())
+  async deleteVideo(@Param('_id') _id: string) {
+    return this.videoService.deleteVideo(_id);
   }
 }
