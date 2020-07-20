@@ -8,6 +8,7 @@ import {
   UseGuards,
   Patch,
   Param,
+  Delete,
 } from '@nestjs/common';
 import { CategoriesService } from '../../services/categories/categories.service';
 import { Category } from 'src/db/schemas/category.schema';
@@ -39,7 +40,7 @@ export class CategoriesController {
   async createCategory(
     @Body(ValidationPipe) category: CategoryDTO,
   ): Promise<Category> {
-    return await this.categoryService.createCategory(category);
+    return this.categoryService.createCategory(category);
   }
 
   @Patch(':_id')
@@ -48,6 +49,12 @@ export class CategoriesController {
     @Body(ValidationPipe) category: CategoryDTO,
     @Param('_id') _id: string,
   ): Promise<Category> {
-    return await this.categoryService.updateCategory(_id, category);
+    return this.categoryService.updateCategory(_id, category);
+  }
+
+  @Delete(':_id')
+  @UseGuards(new RoleGuard())
+  async deleteCategory(@Param('_id') _id: string) {
+    return this.categoryService.deleteCategory(_id);
   }
 }

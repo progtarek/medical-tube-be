@@ -2,16 +2,21 @@ import {
   Injectable,
   ConflictException,
   NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Category } from 'src/db/schemas/category.schema';
 import { CategoryDTO } from '../../DTO/category.dto';
 import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { Types } from 'mongoose';
+import { Video } from 'src/db/schemas/video.schema';
 
 @Injectable()
 export class CategoriesService {
-  constructor(@InjectModel(Category) private readonly categoryModel) {}
+  constructor(
+    @InjectModel(Category) private readonly categoryModel,
+    @InjectModel(Video) private readonly videoModel,
+  ) {}
 
   async createCategory(payload: CategoryDTO): Promise<Category> {
     const exist = await this.categoryModel.findOne({
@@ -67,5 +72,22 @@ export class CategoriesService {
     );
 
     return categories;
+  }
+
+  async deleteCategory(_id: string) {
+    const category = await this.categoryModel.findById(Types.ObjectId(_id));
+    if (!category) {
+      throw new NotFoundException('Category does not exist');
+    }
+    const videosCount = await this.videoModel.countDocuments({
+      category: Types.ObjectId(_id),
+    });
+    if (videosCount) {
+      throw new BadRequestException(
+        'Can not delete category associated with video',
+      );
+    }
+    await category.remove();
+    return;
   }
 }
