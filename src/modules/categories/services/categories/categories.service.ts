@@ -1,4 +1,8 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { Category } from 'src/db/schemas/category.schema';
 import { CategoryDTO } from '../../DTO/category.dto';
@@ -22,7 +26,16 @@ export class CategoriesService {
     }
   }
 
+  async findCategory(_id: string): Promise<Category> {
+    const category = await this.categoryModel.findById(Types.ObjectId(_id));
+    if (!category) {
+      throw new NotFoundException('Category does not exist');
+    }
+    return category;
+  }
+
   async updateCategory(_id: string, payload: CategoryDTO): Promise<Category> {
+    await this.findCategory(_id);
     const exist = await this.categoryModel.findOne({
       $or: [{ 'name.en': payload.name.en }, { 'name.ar': payload.name.ar }],
       _id: { $ne: Types.ObjectId(_id) },

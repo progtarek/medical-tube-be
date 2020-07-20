@@ -28,6 +28,12 @@ export class CategoriesController {
     return this.categoryService.readAll(query);
   }
 
+  @Get(':_id')
+  @UseGuards(new RoleGuard())
+  async findCategory(@Param('_id') _id: string): Promise<Category> {
+    return this.categoryService.findCategory(_id);
+  }
+
   @Post('')
   @UseGuards(new RoleGuard())
   async createCategory(
