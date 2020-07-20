@@ -7,9 +7,9 @@ import {
 import { InjectModel } from 'nestjs-typegoose';
 import { Category } from 'src/db/schemas/category.schema';
 import { CategoryDTO } from '../../DTO/category.dto';
-import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { Types } from 'mongoose';
 import { Video } from 'src/db/schemas/video.schema';
+import { ReadManyQueryDTO } from 'src/core/DTO/read-many-query.dto';
 
 @Injectable()
 export class CategoriesService {
@@ -63,7 +63,7 @@ export class CategoriesService {
     }
   }
 
-  async readAll(query: ReadManyQueryDto): Promise<Category[]> {
+  async readAll(query: ReadManyQueryDTO): Promise<Category[]> {
     const categories = await this.categoryModel.paginate(
       {},
       {

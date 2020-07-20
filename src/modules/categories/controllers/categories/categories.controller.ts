@@ -13,9 +13,9 @@ import {
 import { CategoriesService } from '../../services/categories/categories.service';
 import { Category } from 'src/db/schemas/category.schema';
 import { CategoryDTO } from '../../DTO/category.dto';
-import { ReadManyQueryDto } from 'src/modules/messages/dto/readManyQuery.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RoleGuard } from 'src/core/guards/role.guard';
+import { ReadManyQueryDTO } from 'src/core/DTO/read-many-query.dto';
 
 @UseGuards(AuthGuard())
 @Controller('categories')
@@ -24,7 +24,7 @@ export class CategoriesController {
 
   @Get('')
   async findAll(
-    @Query(ValidationPipe) query: ReadManyQueryDto,
+    @Query(ValidationPipe) query: ReadManyQueryDTO,
   ): Promise<Category[]> {
     return this.categoryService.readAll(query);
   }

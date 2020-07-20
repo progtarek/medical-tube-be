@@ -1,6 +1,6 @@
-import { IsNumber, IsString, IsIn, IsOptional } from 'class-validator';
+import { IsString, IsIn, IsOptional } from 'class-validator';
 
-export class ReadManyQueryDto {
+export class ReadManyQueryDTO {
   @IsOptional()
   @IsString()
   page: number;
