@@ -2,11 +2,11 @@ import { IsNumber, IsString, IsIn, IsOptional } from 'class-validator';
 
 export class ReadManyQueryDto {
   @IsOptional()
-  @IsNumber()
+  @IsString()
   page: number;
 
   @IsOptional()
-  @IsNumber()
+  @IsString()
   limit: number;
 
   @IsOptional()

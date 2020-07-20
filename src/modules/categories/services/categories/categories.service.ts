@@ -37,6 +37,9 @@ export class CategoriesService {
         {
           ...payload,
         },
+        {
+          new: true,
+        },
       );
       return category;
     }

@@ -34,4 +34,29 @@ export class VideosService {
     await video.save();
     return video;
   }
+
+  async updateVideo(_id: string, payload: VideoDTO): Promise<Video> {
+    const { category } = payload;
+    if (category) {
+      const found = await this.categoryModel.findById(Types.ObjectId(category));
+      if (!found) {
+        throw new NotFoundException('category does not exist');
+      }
+    }
+    const video = await this.videoModel.findOneAndUpdate(
+      {
+        _id: Types.ObjectId(_id),
+      },
+      {
+        ...payload,
+      },
+      {
+        new: true,
+      },
+    );
+    if (!video) {
+      throw new NotFoundException('Video does not exist');
+    }
+    return video;
+  }
 }
